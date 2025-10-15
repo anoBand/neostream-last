@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카드</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            gap: 20px; /* 카드 여러 개를 위한 간격 */
+            flex-wrap: wrap; /* 카드가 많아지면 줄바꿈 */
+            margin: 0;
+            background-color: #f0f0f0;
+            font-family: Arial, sans-serif;
+            perspective: 1000px;
+        }
+
+        /* [수정] 배경 이미지를 제거하고 틀 역할만 하도록 변경 */
+        .card-container {
+            width: 300px;
+            height: 450px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+        /* [핵심] JS가 이 클래스를 추가/제거하여 3D 회전 효과를 줌 */
+
+        /* [수정] 앞/뒷면 공통 스타일 */
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden; /* 반짝이 효과가 둥근 모서리를 넘어가지 않도록 */
+        }
+
+        /* [수정] 배경 이미지 및 텍스트 스타일을 앞면에 적용 */
+        .card-front {
+            background-image: url("pokeka.png"); /* 예시 이미지 */
+            background-size: cover;
+            background-position: center;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2em;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .card-back {
+            transform: rotateY(180deg);
+            background-color: #2c2c2c;
+            color: white;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        /* 반짝이 효과는 그대로 유지 */
+        .card-front::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: linear-gradient(45deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.2) 100%);
+            transform: translateX(-100%) rotate(45deg);
+            transition: transform 0.1s ease-out;
+            pointer-events: none;
+        }
+
+        .card-container:hover .card-front::before {
+            transform: translateX(100%) rotate(45deg);
+        }
+    </style>
+</head>
+<body>
+
+<div class="card-container">
+    <div class="card-inner">
+        <div class="card-front">
+        </div>
+        <div class="card-back">
+            <h3>팀 정보 1</h3>
+            <p>Vocal: 김보컬</p>
+            <p>Guitar: 김기타</p>
+        </div>
+    </div>
+</div>
+
+<div class="card-container">
+    <div class="card-inner">
+        <div class="card-front">
+        </div>
+        <div class="card-back">
+            <h3>팀 정보 2</h3>
+            <p>Bass: 박베이스</p>
+            <p>Drums: 이드럼</p>
+        </div>
+    </div>
+</div>
+<script>
+    const cards = document.querySelectorAll('.card-container');
+
+    cards.forEach(card => {
+        const cardInner = card.querySelector('.card-inner');
+        // 카드의 뒤집힌 상태를 JS 변수로 직접 관리합니다.
+        let isFlipped = false;
+
+        // 마우스 진입: 빠른 추적 모드로 전환
+        card.addEventListener('mouseenter', () => {
+            // 트랜지션 속도를 '빠르게' 설정합니다.
+            cardInner.style.transition = 'transform 0.1s ease-out';
+        });
+
+        // 마우스 이동: 3D 회전 효과 적용
+        card.addEventListener('mousemove', (e) => {
+            // 뒤집힌 상태에서는 3D 회전 효과를 적용하지 않습니다.
+            if (isFlipped) return;
+
+            const { width, height, left, top } = card.getBoundingClientRect();
+            const x = e.clientX - left;
+            const y = e.clientY - top;
+            const centerX = width / 2;
+            const centerY = height / 2;
+
+            const rotateX = ((y - centerY) / centerY) * 15;
+            const rotateY = ((x - centerX) / centerX) * -15;
+
+            cardInner.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        // 마우스 이탈: 느린 복귀 모드로 전환
+        card.addEventListener('mouseleave', () => {
+            // 트랜지션 속도를 '느리게' 설정하여 부드럽게 복귀시킵니다.
+            cardInner.style.transition = 'transform 0.5s ease-in-out';
+
+            // 뒤집힌 상태가 아니라면 카드를 정면으로 되돌립니다.
+            if (!isFlipped) {
+                cardInner.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            }
+        });
+
+        // 클릭: 느린 뒤집기 모드 적용
+        card.addEventListener('click', () => {
+            // 트랜지션 속도를 '느리게' 설정하여 뒤집기 애니메이션을 부드럽게 합니다.
+            cardInner.style.transition = 'transform 0.5s ease-in-out';
+
+            // isFlipped 상태를 반전시킵니다.
+            isFlipped = !isFlipped;
+
+            if (isFlipped) {
+                // 뒤집기
+                cardInner.style.transform = 'rotateY(180deg)';
+            } else {
+                // 앞면으로 돌아오기
+                cardInner.style.transform = 'rotateX(0deg) rotateY(0deg)';
+            }
+        });
+    });
+</script>
+</body>
+</html>
