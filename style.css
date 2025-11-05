@@ -1,0 +1,301 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap');
+/* [수정] body에 기본 폰트 적용 */
+body {
+    min-height: 100vh;
+    margin: 0;
+    box-sizing: border-box;
+    background-color: #f0f0f0;
+    /* [신규] 폰트 패밀리 적용 */
+    font-family: 'Poppins', 'Noto Sans KR', sans-serif;
+}
+
+/* [수정] main 태그 상단 여백 조정 (제목이 커졌으므로) */
+main {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 60px 20px 20px 20px; /* 상단 여백 증가 */
+    box-sizing: border-box;
+}
+
+/* [수정] h1 스타일을 명세에 맞게 변경 */
+h1 {
+    text-align: center;
+    color: #333;
+    font-size: 15vw; /* 뷰포트 너비 비례 */
+    font-weight: 700; /* Bold */
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 0.2em;
+}
+
+/* [수정] h2 스타일을 명세에 맞게 변경 */
+h2 {
+    text-align: center;
+    color: #555;
+    font-size: 5vw; /* 뷰포트 너비 비례 */
+    font-weight: 400; /* Regular */
+    margin-top: 10px;
+    margin-bottom: 2em;
+}
+/* --- [신규] 탭 내비게이션 스타일 --- */
+nav {
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    border-bottom: 1px solid #ddd;
+    margin-bottom: 2rem;
+}
+nav a {
+    text-decoration: none;
+    color: #333;
+    padding: 1rem 0;
+    position: relative;
+    font-weight: 700; /* 500 -> 700 (Bold)로 변경 */
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif; /* 폰트 적용 */
+}
+nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 2px;
+    background: #0366d6; /* 강조 색상 */
+    transform: scaleX(0);
+    transition: transform 0.2s ease;
+    transform-origin: bottom right;
+}
+nav a:hover::after,
+nav a.active::after {
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* --- [신규] 탭 콘텐츠 래퍼 --- */
+/* --- [신규] 탭 콘텐츠 래퍼 --- */
+.tab-content {
+    position: relative;
+    /* [수정] 높이 애니메이션을 위한 설정 추가 */
+    overflow: hidden;
+    transition: height 0.3s ease-in-out; /* 0.3초간 높이 변화 */
+}
+
+/* --- [신규] 섹션 전환 애니메이션 (참고 프롬프트 적용) --- */
+/* .tab-content의 직계 자식인 section에만 적용하여
+  내부의 .details-box(section 태그)와 충돌 방지
+*/
+.tab-content > section {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    width: 100%; /* 너비 고정 */
+    left: 0;
+    right: 0;
+    transition: opacity 0.5s ease;
+    /* [신규] 그림자 공간 확보를 위한 좌우 패딩 추가 */
+    padding: 0 30px; /* 좌우에 30px 패딩 */
+    box-sizing: border-box; /* 패딩이 너비 계산에 포함되도록 */
+}
+.tab-content > section.active {
+    opacity: 1;
+    visibility: visible;
+    position: static; /* 활성화 시 문서 흐름에 포함 */
+}
+/* [유지] details 섹션 스타일 */
+.details-box {
+    background: #ffffff;
+    border-radius: 10px;
+    padding: 1.5em 2em;
+    margin: 2em auto;
+    border: 1px solid #ddd;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+.details-box h3 {
+    margin-top: 0;
+    color: #333;
+}
+.details-box p {
+    margin: 0.5em 0;
+    line-height: 1.6;
+    color: #555;
+}
+
+/* [유지] 페이드인 애니메이션 스타일 */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* [삭제] 아코디언 관련 스타일 모두 삭제됨 */
+
+/* --- [유지] 카드 스타일 (변경 없음) --- */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    width: 100%;
+    margin: 0 auto;
+    perspective: 1000px;
+}
+.card-container {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    position: relative;
+    cursor: pointer;
+}
+.card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+}
+.card-front, .card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+}
+.card-front {
+    background-size: cover;
+    background-position: center;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2em;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+.card-image-1 { background-image: url("./media/image1.png"); }
+.card-image-2 { background-image: url("./media/image2.jpg"); }
+.card-image-3 { background-image: url("./media/image3.jpg"); }
+.card-back {
+    transform: rotateY(180deg);
+    background-color: #2c2c2c;
+    color: white;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.card-front::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: linear-gradient(45deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 50%, rgba(255,255,255,0.2) 100%);
+    transform: translateX(-100%) rotate(45deg);
+    transition: transform 0.1s ease-out;
+    pointer-events: none;
+}
+.card-container:hover .card-front::before {
+    transform: translateX(100%) rotate(45deg);
+}
+
+/* --- [신규] 채팅 UI 스타일 --- */
+.chat-window {
+    width: 100%;
+    height: 500px; /* 채팅창의 고정 높이 */
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    box-sizing: border-box;
+    overflow-y: auto; /* 메시지가 많아지면 스크롤 */
+    display: flex;
+    flex-direction: column; /* 메시지가 위에서 아래로 쌓임 */
+    gap: 10px;
+}
+
+/* 말풍선 공통 스타일 */
+.chat-message {
+    padding: 0 15px;
+    border-radius: 20px;
+    max-width: 75%;
+    line-height: 1.5;
+    word-wrap: break-word; /* 긴 텍스트 줄바꿈 */
+}
+
+/* 받은 메시지 (기본 안내) */
+.chat-message.received {
+    background-color: #efefef;
+    color: #000;
+    align-self: flex-start; /* 왼쪽 정렬 */
+}
+
+/* [수정] 보낸 메시지 (기본 틀) */
+.chat-message.sent {
+    /* background-color: #0095f6; <-- [삭제] (JS가 색상을 관리) */
+    color: white; /* 기본 텍스트 색상 */
+    align-self: flex-end; /* 오른쪽 정렬 */
+}
+
+/* [수정] 랜덤 색상 말풍선을 위한 스타일 */
+.chat-message.sent.custom-color {
+    /* background-color는 JS로 설정됩니다 */
+    color: white; /* [수정] #222 -> white */
+}
+
+/* 입력 폼 스타일 */
+.chat-form {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+#chat-input {
+    flex-grow: 1; /* 입력창이 남은 공간 모두 차지 */
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    padding: 12px 18px;
+    font-size: 1em;
+}
+
+/* [수정] 채팅 버튼 스타일 (회색 계열) */
+.chat-form button {
+    background-color: #333333; /* 검은 계열 색상 */
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 0 20px;
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.chat-form button:hover {
+    background-color: #1a1a1a; /* 더 어두운 검은색 */
+}
+
+@media (min-width: 768px) {
+    .grid-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    /* [신규] 768px 이상에서 h1, h2 폰트 크기 고정 */
+    h1 {
+        font-size: 6rem; /* 약 96px */
+    }
+    h2 {
+        font-size: 2rem; /* 약 32px */
+    }
+}
+
+/* [수정] 기존 모바일 @media 규칙 정리 */
+@media (max-width: 767px) { /* 768px 미만으로 명확히 분리 */
+    .grid-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    main {
+        padding: 20px 10px; /* 모바일 여백 */
+    }
+    /* vw 단위가 기본값이므로 모바일 h1, h2 별도 지정 불필요 */
+}
