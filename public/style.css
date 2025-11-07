@@ -176,9 +176,9 @@ nav a.active::after {
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
-.card-image-1 { background-image: url("./media/image1.png"); }
-.card-image-2 { background-image: url("./media/image2.jpg"); }
-.card-image-3 { background-image: url("./media/image3.jpg"); }
+.card-image-1 { background-image: url("media/image1.png"); }
+.card-image-2 { background-image: url("media/image2.jpg"); }
+.card-image-3 { background-image: url("media/image3.jpg"); }
 .card-back {
     transform: rotateY(180deg);
     background-color: #2c2c2c;

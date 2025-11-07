@@ -5,11 +5,11 @@ const path = require('path');
 
 const app = express();
 const PORT = 3000;
-const DB_FILE = './messages.json';
+const DB_FILE = path.join(__dirname, './messages.json');
 
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '/')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // --- [수정] 랜덤 HSL 색상 생성 함수 ---
 /**
