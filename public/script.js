@@ -15,8 +15,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     fadeInElements.forEach(el => observer.observe(el));
 
-    // ----- 2. [삭제] 탭 콘텐츠 높이 보정 로직 (min-height) 삭제됨 -----
-
     // ----- 3. 3D 카드 로직 (유지) -----
     const cards = document.querySelectorAll('.card-container');
     cards.forEach(card => {
@@ -190,5 +188,78 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     // 페이지 로드 시 메시지 불러오기
     loadMessages();
+
+    // ----- 5. [신규] 카드 이미지 색상 추출 및 뒷면 배경 적용 -----
+    const colorThief = new ColorThief();
+
+    // RGB를 HSL로 변환하고 명도를 낮추는 헬퍼 함수
+    function getDarkenedColor(r, g, b) {
+        // 1. RGB 값을 0~1 사이로 변환
+        r /= 255; g /= 255; b /= 255;
+
+        const max = Math.max(r, g, b), min = Math.min(r, g, b);
+        let h, s, l = (max + min) / 2;
+
+        if (max === min) {
+            h = s = 0; // 무채색
+        } else {
+            const d = max - min;
+            s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+            switch (max) {
+                case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                case g: h = (b - r) / d + 2; break;
+                case b: h = (r - g) / d + 4; break;
+            }
+            h /= 6;
+        }
+
+        // 2. 명도(Lightness)를 20%로 고정하여 어둡게 만듦 (흰 텍스트 가독성 확보)
+        // 채도(Saturation)는 10% 정도 살짝 낮춰서 너무 튀지 않게 조정
+        s = s * 0.9;
+        l = 0.20;
+
+        // 3. CSS HSL 문자열로 반환
+        return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
+    }
+
+    const cardsForColor = document.querySelectorAll('.card-container');
+
+    cardsForColor.forEach((card, index) => {
+        const front = card.querySelector('.card-front');
+        const back = card.querySelector('.card-back');
+
+        // 1. CSS에서 background-image URL 가져오기
+        const style = window.getComputedStyle(front);
+        let bgImage = style.backgroundImage;
+
+        // url("...") 형태에서 주소만 깨끗하게 추출
+        // 예: url("media/image_1-1.jpg") -> media/image_1-1.jpg
+        bgImage = bgImage.slice(4, -1).replace(/"/g, "");
+
+        if (!bgImage || bgImage === 'none') return;
+
+        // 2. 가상의 이미지 객체 생성하여 로드
+        const img = new Image();
+        img.src = bgImage;
+        img.crossOrigin = "Anonymous"; // 로컬/서버 환경에서의 보안 문제 방지
+
+        img.onload = () => {
+            try {
+                // 3. 주조색(Dominant Color) 추출 [R, G, B]
+                const rgb = colorThief.getColor(img);
+
+                // 4. 어두운 색으로 변환하여 적용
+                const darkColor = getDarkenedColor(rgb[0], rgb[1], rgb[2]);
+
+                // 배경색 적용 및 트랜지션 효과
+                back.style.backgroundColor = darkColor;
+                back.style.transition = 'background-color 0.5s ease';
+
+            } catch (e) {
+                console.warn(`이미지 색상 추출 실패 (Card ${index + 1}):`, e);
+                // 실패 시 기본 회색 유지
+            }
+        };
+    });
 
 }); // DOMContentLoaded 끝

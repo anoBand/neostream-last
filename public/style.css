@@ -1,3 +1,4 @@
+/*style.css*/
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&family=Noto+Sans+KR:wght@400;700&display=swap');
 /* [수정] body에 기본 폰트 적용 */
 body {
@@ -38,6 +39,43 @@ h2 {
     margin-top: 10px;
     margin-bottom: 2em;
 }
+
+/* --- [신규] Phase 구분선 스타일 --- */
+/* [신규] 안내 문구 스타일 */
+.instruction-text {
+    text-align: center;
+    font-size: 0.9rem;       /* 본문보다 약간 작게 */
+    color: #777;             /* 너무 튀지 않는 회색 */
+    margin-top: 20px;        /* 위쪽 여백 */
+    margin-bottom: -20px;    /* 아래쪽 여백 (구분선과 가깝게 하기 위해 음수 혹은 0 사용) */
+    font-weight: 400;
+    letter-spacing: -0.5px;
+    animation-delay: 0.5s;   /* 다른 요소보다 조금 늦게 뜨도록 (선택사항) */
+}
+
+.phase-divider {
+    display: flex;
+    align-items: center; /* 텍스트와 선 수직 중앙 정렬 */
+    width: 100%;
+    margin: 40px 0 20px 0; /* 위 40px, 아래 20px 간격 */
+    padding: 0 5px; /* 양옆 약간의 여백 */
+    box-sizing: border-box;
+}
+
+.phase-divider span {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #333;
+    margin-right: 15px; /* 텍스트와 선 사이 간격 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+
+.phase-divider::after {
+    content: "";
+    flex-grow: 1; /* 남은 공간을 모두 차지 */
+    height: 1px; /* 선 두께 */
+    background-color: #ccc; /* 선 색상 */
+}
 /* --- [신규] 탭 내비게이션 스타일 --- */
 nav {
     display: flex;
@@ -73,8 +111,6 @@ nav a.active::after {
     transform-origin: bottom left;
 }
 
-/* --- [신규] 탭 콘텐츠 래퍼 --- */
-/* --- [신규] 탭 콘텐츠 래퍼 --- */
 .tab-content {
     position: relative;
     /* [수정] 높이 애니메이션을 위한 설정 추가 */
@@ -146,7 +182,7 @@ nav a.active::after {
 }
 .card-container {
     width: 100%;
-    aspect-ratio: 2 / 3;
+    aspect-ratio: 1 / 1;
     position: relative;
     cursor: pointer;
 }
@@ -176,15 +212,54 @@ nav a.active::after {
     font-weight: bold;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
 }
-.card-image-1 { background-image: url("media/image1.png"); }
-.card-image-2 { background-image: url("media/image2.jpg"); }
-.card-image-3 { background-image: url("media/image3.jpg"); }
+
+.card-image-1 { background-image: url("media/image_1-1.jpg"); }
+.card-image-2 { background-image: url("media/image_1-2.jpg"); }
+.card-image-3 { background-image: url("media/image_1-3.jpg"); }
+.card-image-4 { background-image: url("media/image_1-4.jpg"); }
+.card-image-5 { background-image: url("media/image_1-5.jpg"); }
+.card-image-6 { background-image: url("media/image_1-6.jpg"); }
+.card-image-7 { background-image: url("media/image_1-7.jpg"); }
+.card-image-8 { background-image: url("media/image_1-8.jpg"); }
+.card-image-9 { background-image: url("media/image_1-9.jpg"); }
+.card-image-10 { background-image: url("media/image_1-10.jpg"); }
+.card-image-11 { background-image: url("media/image_2-1.jpg"); }
+.card-image-12 { background-image: url("media/image_2-2.jpg"); }
+.card-image-13 { background-image: url("media/image_2-3.jpg"); }
+.card-image-14 { background-image: url("media/image_2-4.jpg"); }
+.card-image-15 { background-image: url("media/image_2-5.jpg"); }
+.card-image-16 { background-image: url("media/image_2-6.jpg"); }
+.card-image-17 { background-image: url("media/image_2-7.jpg"); }
+.card-image-18 { background-image: url("media/image_2-8.jpg"); }
+.card-image-19 { background-image: url("media/image_2-9.jpg"); }
+.card-image-20 { background-image: url("media/image_2-10.jpg"); }
+
 .card-back {
     transform: rotateY(180deg);
     background-color: #2c2c2c;
     color: white;
     padding: 20px;
     box-sizing: border-box;
+
+    /* [추가/수정] 텍스트 스타일 개선 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* 텍스트 수직 중앙 정렬 */
+    align-items: center;     /* 텍스트 수평 중앙 정렬 */
+    text-align: center;      /* 줄바꿈 시 가운데 정렬 */
+}
+
+/* [신규] 카드 뒷면 내부의 p 태그 스타일 구체화 */
+.card-back p {
+    font-size: 1rem;       /* 글자 크기 (필요시 조정) */
+    line-height: 1.8;      /* 행간 (줄 간격): 보통 1.5~1.8 추천 */
+    letter-spacing: 0.05em; /* 자간 (글자 간격): 약간 넓게 */
+    margin: 0;             /* 불필요한 여백 제거 */
+}
+
+.card-back h3 {
+    margin-bottom: 15px;   /* 제목과 본문 사이 간격 */
+    letter-spacing: 0.1em; /* 제목은 자간을 좀 더 넓게 */
 }
 .card-front::before {
     content: '';
