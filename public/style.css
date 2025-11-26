@@ -374,3 +374,31 @@ nav a.active::after {
     }
     /* vw 단위가 기본값이므로 모바일 h1, h2 별도 지정 불필요 */
 }
+
+@media (max-width: 580px) {
+    .grid-container {
+        /* 한 줄에 1개씩 표시 (1열) */
+        grid-template-columns: 1fr;
+
+        /* 카드가 화면 전체를 꽉 채우면 너무 부담스러울 수 있으므로
+           적당한 최대 너비를 주고 중앙 정렬합니다.
+           (원하시면 max-width를 없애서 화면에 꽉 차게 할 수도 있습니다) */
+        max-width: 380px;
+        margin: 0 auto;
+    }
+
+    /* 카드 뒷면 텍스트가 잘리지 않도록 폰트 크기나 여백 미세 조정 */
+    .card-back {
+        padding: 15px; /* 패딩을 조금 줄여 공간 확보 */
+    }
+
+    .card-back h3 {
+        font-size: 1.3rem; /* 제목 크기 살짝 조정 */
+        margin-bottom: 10px;
+    }
+
+    .card-back p {
+        font-size: 0.95rem; /* 본문 크기 살짝 조정 */
+        line-height: 1.6;
+    }
+}
