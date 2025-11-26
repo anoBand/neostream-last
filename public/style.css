@@ -380,17 +380,30 @@ nav a.active::after {
     /* (기존) 카드 그리드 1열 변경 코드 */
     .grid-container {
         grid-template-columns: 1fr;
-        max-width: 300px;
+        max-width: 270px; /* 좁아진 폭에 맞춰 설정 */
         margin: 0 auto;
     }
-    .card-back { padding: 15px; }
-    .card-back h3 { font-size: 1.3rem; margin-bottom: 10px; }
-    .card-back p { font-size: 0.95rem; line-height: 1.6; }
 
-    /* [신규] 채팅 전송 버튼 스타일 조정 */
+    /* [수정] 좁아진 카드 폭에 맞춰 내부 여백과 폰트 크기 축소 */
+    .card-back {
+        padding: 10px; /* 패딩을 15px -> 10px로 줄여 내부 공간 확보 */
+    }
+
+    .card-back h3 {
+        font-size: 1.1rem; /* 제목 크기 1.3rem -> 1.1rem로 축소 */
+        margin-bottom: 8px;
+        word-break: keep-all; /* 단어 중간에 줄바꿈 방지 (선택사항) */
+    }
+
+    .card-back p {
+        font-size: 0.85rem; /* 본문 크기 0.95rem -> 0.85rem로 축소 */
+        line-height: 1.5;   /* 줄 간격도 약간 좁힘 */
+    }
+
+    /* [신규] 채팅 전송 버튼 스타일 조정 (기존 유지) */
     .chat-form button {
-        font-size: 0.9rem;    /* 폰트 크기 줄임 (기존 1em -> 0.9rem) */
-        padding: 0 15px;      /* 좌우 여백 줄임 (기존 20px -> 15px) */
-        white-space: nowrap;  /* [핵심] 텍스트가 절대 줄바꿈되지 않도록 강제 */
+        font-size: 0.9rem;
+        padding: 0 15px;
+        white-space: nowrap;
     }
 }
